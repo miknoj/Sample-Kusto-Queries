@@ -1,0 +1,6 @@
+let Threshold = 70;
+Perf
+| where ObjectName == "Processor" and CounterName == "% Processor Time"
+| where InstanceName == "_Total"
+| summarize Utilization=avg(CounterValue) by Computer, bin(TimeGenerated, 10m)
+| extend AtCapacity = iff(Utilization > Threshold, "REACHED", "NO")

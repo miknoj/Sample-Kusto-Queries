@@ -1,0 +1,8 @@
+let Threshold = 10; // MegaBytes
+let convertToMB = (bytes:real)
+{bytes/1000/1000};
+let timerange = (loggedTime:time, start:time, end:time)
+{loggedTime > ago(start) and loggedTime < ago(end)};
+WireData
+| where timerange(TimeGenerated, 1d, 0d)
+| summarize Utilization=avg(convertToMB(TotalBytes)) by Computer, bin(TimeGenerated, 10m)
